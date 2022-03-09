@@ -4,5 +4,7 @@ $(document).ready(function(){
     
   });
   $("hr").remove();
-  $("body").children().last().html("Powered by <a href='https://www.freeflarum.com' target='_blank'>FreeFlarum</a>");
+  // $("body").children().last().html("Powered by <a href='https://www.freeflarum.com' target='_blank'>FreeFlarum</a>");
+  $("body").children().last().html("xxx");
+
 });
