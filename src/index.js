@@ -4,4 +4,5 @@ $(document).ready(function(){
     
   });
   $("hr").remove();
+  $("body").children().last().text('validate failed');
 });
