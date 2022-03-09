@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  $(".Button--primary").click(function(){
+  $(".Hero-title").click(function(){
     console.log("dsds");
   });
 });
