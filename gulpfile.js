@@ -35,8 +35,8 @@ gulp.task('js:build', async () => {
     //     presets: ['es2015']
     //   })
     // )
-    .pipe(rename('index.js'))
-    .pipe(gulp.dest('./dist/'))
+    // .pipe(rename('index.js'))
+    // .pipe(gulp.dest('./dist/'))
     .pipe(uglify())
     .on('error', function(err) {
       gutil.log(gutil.colors.red('[Error]'), err.toString());
@@ -50,8 +50,8 @@ gulp.task('css:build', async () => {
   await gulp
     .src(cssPath)
     .pipe(less()) 
-    .pipe(rename('style.css'))
-    .pipe(gulp.dest('./dist/'))
+    // .pipe(rename('style.css'))
+    // .pipe(gulp.dest('./dist/'))
     .pipe(minifyCss())
     .on('error', function(err) {
       gutil.log(gutil.colors.red('[Error]'), err.toString());
@@ -64,32 +64,48 @@ gulp.task('css:build', async () => {
 // Server
 gulp.task('server', () => {
   connect.server({
-    root: './test/',
+    root: './dist/',
     livereload: true,
   });
 });
-gulp.task('html:dev', async () => {
-  await gulp.src('./test/index.html').pipe(connect.reload());
-});
+// gulp.task('html:dev', async () => {
+//   await gulp.src('./test/index.html').pipe(connect.reload());
+// });
 
 gulp.task('js:dev', async () => {
-  await gulp.src('./src/index.js').pipe(gulp.dest('./test/')).pipe(connect.reload());
+  await gulp.src('./src/index.js')
+  .pipe(uglify())
+  .pipe(rename('index.min.js'))
+  .pipe(gulp.dest('./dist/'))
+  .pipe(connect.reload());
 });
 gulp.task('js:copy', async () => {
-  await gulp.src('./src/index.js').pipe(gulp.dest('./test/'));
+  await gulp.src('./src/index.js')
+  .pipe(uglify())
+  .pipe(rename('index.min.js'))
+  .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('less:dev', async () => {
-  await gulp.src('./src/style/style.less').pipe(less()).pipe(gulp.dest('./test/')).pipe(connect.reload());
+  await gulp.src('./src/style/style.less')
+  .pipe(less())
+  .pipe(minifyCss())
+  .pipe(rename('style.min.css'))
+  .pipe(gulp.dest('./dist/'))
+  .pipe(connect.reload());
 });
 gulp.task('less:copy', async () => {
-  await gulp.src('./src/style/style.less').pipe(less()).pipe(gulp.dest('./test/'));
+  await gulp.src('./src/style/style.less')  
+  .pipe(less())
+  .pipe(minifyCss())
+  .pipe(rename('style.min.css'))
+  .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('watch', () => {
   gulp.watch('./src/style/style.less', gulp.series('less:dev'));
   gulp.watch('./src/index.js', gulp.series('js:dev'));
-  gulp.watch('./test/index.html', gulp.series('html:dev'));
+  // gulp.watch('./test/index.html', gulp.series('html:dev'));
 });
 
 gulp.task(
